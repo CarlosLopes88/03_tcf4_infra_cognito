@@ -1,4 +1,7 @@
 ├── infra_cognito/
+│   ├── /.github
+│   │   └── /workflows
+|   │   │   └── deploy_cognito.yaml
 │   ├── terraform
 │   │   └── cognito.tf
 
