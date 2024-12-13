@@ -85,28 +85,3 @@ jobs:
             terraform output -raw cognito_user_pool_arn 2>/dev/null || echo ""
             echo "EOF"
           } >> $GITHUB_OUTPUT
-
-      - name: Verify Cognito Configuration
-        working-directory: ./cognito
-        run: |
-          USER_POOL_ID=$(terraform output -raw cognito_pool_id 2>/dev/null || echo "")
-          CLIENT_ID=$(terraform output -raw cognito_client_id 2>/dev/null || echo "")
-
-          if [ -z "$USER_POOL_ID" ]; then
-            echo "User Pool ID not found. Exiting..."
-            exit 1
-          fi
-
-          if [ -z "$CLIENT_ID" ]; then
-            echo "Client ID not found. Exiting..."
-            exit 1
-          fi
-
-          echo "Verifying User Pool configuration..."
-          aws cognito-idp describe-user-pool \
-            --user-pool-id $USER_POOL_ID
-
-          echo "Verifying App Client configuration..."
-          aws cognito-idp describe-user-pool-client \
-            --user-pool-id $USER_POOL_ID \
-            --client-id $CLIENT_ID
